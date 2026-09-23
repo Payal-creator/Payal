@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Payal Kumari | Full-Stack & MERN Developer — Space Fleet Terminal</title>
+  <meta name="description" content="Cinematic Space Portfolio of Payal Kumari — MERN Stack & Full-Stack Developer specializing in Python, FastAPI, React.js, and scalable web architectures.">
+  <meta name="keywords" content="Payal Kumari, MERN Stack Developer, Full-Stack Developer, Python, FastAPI, React, JavaScript, Software Engineer Portfolio">
+  <meta name="author" content="Payal Kumari">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Payal Kumari | Full-Stack Developer — Cosmic Space Terminal">
+  <meta property="og:description" content="Pilot your way through Payal Kumari's projects, technical arsenal, and mission logs.">
+
+  <!-- Favicon: PK Monogram -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff2a85'/%3E%3Cstop offset='50%25' stop-color='%239d4edd'/%3E%3Cstop offset='100%25' stop-color='%2300d2ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Crect x='4' y='4' width='92' height='92' rx='18' fill='%23080414'/%3E%3Crect x='9' y='9' width='82' height='82' rx='14' fill='%231a0530'/%3E%3Ctext x='50' y='68' font-family='Arial Black,sans-serif' font-size='44' font-weight='900' text-anchor='middle' fill='url(%23g)'%3EPK%3C/text%3E%3C/svg%3E">
+
+  <!-- Futuristic Typography: Orbitron, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS v3 Play CDN Engine -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'space-dark': '#040208',
+            'space-deep': '#080414',
+            'space-surface': 'rgba(14, 8, 28, 0.78)',
+            'neon-pink': '#ff2a85',
+            'neon-hotpink': '#ff007f',
+            'neon-purple': '#9d4edd',
+            'neon-violet': '#7928ca',
+            'neon-blue': '#00d2ff',
+            'neon-cyan': '#00f0ff',
+            'neon-green': '#00ffaa',
+          },
+          fontFamily: {
+            hud: ['Orbitron', 'monospace'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          boxShadow: {
+            'glow-pink': '0 0 20px rgba(255, 42, 133, 0.45)',
+            'glow-blue': '0 0 20px rgba(0, 210, 255, 0.45)',
+            'glow-purple': '0 0 20px rgba(157, 78, 221, 0.45)',
+            'glow-cockpit': '0 12px 34px rgba(0, 0, 0, 0.7)',
+          },
+          backgroundImage: {
+            'space-warp': 'linear-gradient(135deg, #ff2a85 0%, #9d4edd 50%, #00d2ff 100%)',
+            'hyperdrive': 'linear-gradient(135deg, #00d2ff 0%, #9d4edd 50%, #ff2a85 100%)',
+            'nebula': 'linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #0070f3 100%)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="./client/css/styles.css">
+</head>
+<body class="space-theme">
+
+  <!-- BACKGROUND: 3D Interactive Canvas Starfield + Nebula Glow -->
+  <canvas id="starfieldCanvas" class="starfield-canvas"></canvas>
+  <div class="nebula-overlay" aria-hidden="true"></div>
+  <div class="scanline-overlay" id="scanlineOverlay" aria-hidden="true"></div>
+
+  <!-- HUD TOP TELEMETRY BAR -->
+  <aside class="hud-telemetry" aria-label="Flight telemetry">
+    <div class="hud-item pilot-tag">
+      <div class="hud-pilot-logo">
+        <div class="hud-pilot-logo-inner">
+          <span class="hud-pilot-pk">PK</span>
+        </div>
+      </div>
+      <span class="hud-title">PILOT:</span>
+      <span class="hud-value">PAYAL KUMARI</span>
+    </div>
+    <div class="hud-item sector-tag">
+      <i class="fa-solid fa-satellite-dish"></i>
+      <span class="hud-title">COORDS:</span>
+      <span class="hud-value">DELHI [110054]</span>
+    </div>
+    <div class="hud-item mission-tag">
+      <i class="fa-solid fa-microchip"></i>
+      <span class="hud-title">SYSTEM:</span>
+      <span class="hud-value">MERN // PYTHON // FASTAPI</span>
+    </div>
+    <div class="hud-controls">
+      <button class="hud-btn" id="audioToggleBtn" title="Toggle Sci-Fi SFX Audio (Web Audio API)">
+        <i class="fa-solid fa-volume-high" id="audioIcon"></i>
+        <span id="audioText">SFX: ON</span>
+      </button>
+      <button class="hud-btn game-launch-btn" id="launchGameBtn" title="Play Starfighter Space Game">
+        <i class="fa-solid fa-gamepad"></i>
+        <span class="game-btn-text">PILOT STARFIGHTER [G]</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN NAVIGATION COCKPIT BAR -->
+  <header class="navbar fixed top-[36px] left-0 w-full z-[1000] backdrop-blur-xl" id="navbar">
+    <div class="nav-container flex items-center justify-between max-w-[1120px] mx-auto px-4">
+      <a href="#hero" class="nav-brand flex items-center gap-2.5 transition-transform hover:scale-[1.02]" aria-label="Payal Kumari Portfolio">
+        <div class="nav-avatar-glow">
+          <div class="nav-logo-inner">
+            <span class="nav-logo-pk">PK</span>
+          </div>
+        </div>
+        <div class="nav-brand-text flex flex-col">
+          <span class="brand-name font-hud font-extrabold text-white tracking-wider">PAYAL<span class="brand-accent">.KUMARI</span></span>
+          <span class="brand-sub font-mono text-neon-blue tracking-widest text-[0.62rem]">FULL-STACK COMMAND</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu (And Full Mobile Drawer) -->
+      <nav class="nav-menu" id="navMenu">
+        <div class="nav-drawer-header">
+          <span class="drawer-title font-hud text-neon-blue text-sm"><i class="fa-solid fa-compass"></i> MISSION NAVIGATION</span>
+          <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <ul class="nav-list flex items-center list-none gap-5">
+          <li><a href="#hero" class="nav-link active font-hud"><span class="nav-num text-neon-pink">01.</span> COMMAND</a></li>
+          <li><a href="#about" class="nav-link font-hud"><span class="nav-num text-neon-pink">02.</span> PROFILE</a></li>
+          <li><a href="#skills" class="nav-link font-hud"><span class="nav-num text-neon-pink">03.</span> ARSENAL</a></li>
+          <li><a href="#projects" class="nav-link font-hud"><span class="nav-num text-neon-pink">04.</span> EXPEDITIONS</a></li>
+          <li><a href="#experience" class="nav-link font-hud"><span class="nav-num text-neon-pink">05.</span> FLIGHT LOG</a></li>
+          <li><a href="#contact" class="nav-link font-hud"><span class="nav-num text-neon-pink">06.</span> TRANSMIT</a></li>
+        </ul>
+        <div class="drawer-extra-actions">
+          <a href="cvpayal.jpeg" target="_blank" download="Payal_Kumari_CV.jpeg" class="btn btn-hud-outline btn-block">
+            <i class="fa-solid fa-file-arrow-down"></i> DOWNLOAD CV
+          </a>
+          <a href="#contact" class="btn btn-hud-primary btn-block drawer-transmit-btn">
+            <i class="fa-solid fa-bolt"></i> OPEN TRANSMISSION
+          </a>
+        </div>
+      </nav>
+
+      <!-- Nav Actions (Desktop + Mobile Toggle) -->
+      <div class="nav-actions flex items-center gap-2">
+        <a href="cvpayal.jpeg" target="_blank" class="btn btn-hud-sm desktop-only-btn flex items-center gap-1.5" id="viewCvBtn" download="Payal_Kumari_CV.jpeg">
+          <i class="fa-solid fa-file-arrow-down"></i>
+          <span>GET CV</span>
+        </a>
+        <a href="#contact" class="btn btn-hud-primary btn-sm desktop-only-btn flex items-center gap-1.5">
+          <i class="fa-solid fa-bolt"></i>
+          <span>TRANSMIT</span>
+        </a>
+
+        <!-- Mobile Menu Toggle Button (Prominent & Clear) -->
+        <button class="nav-toggle font-hud font-bold" id="navToggle" aria-label="Open Navigation Menu" aria-expanded="false">
+          <i class="fa-solid fa-bars nav-toggle-icon"></i>
+          <span class="nav-toggle-text">MENU</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE SWIPEABLE QUICK NAVIGATION STRIP (Always Visible on Mobile & Tablets) -->
+    <div class="mobile-nav-ribbon w-full overflow-x-auto" id="mobileNavRibbon" aria-label="Mobile quick navigation">
+      <div class="ribbon-scroll flex items-center gap-3 whitespace-nowrap min-w-max">
+        <a href="#hero" class="ribbon-link active inline-flex items-center gap-1 font-hud"><span class="r-num text-neon-pink">01.</span> COMMAND</a>
+        <a href="#about" class="ribbon-link inline-flex items-center gap-1 font-hud"><span class="r-num text-neon-pink">02.</span> PROFILE</a>
+        <a href="#skills" class="ribbon-link inline-flex items-center gap-1 font-hud"><span class="r-num text-neon-pink">03.</span> ARSENAL</a>
+        <a href="#projects" class="ribbon-link inline-flex items-center gap-1 font-hud"><span class="r-num text-neon-pink">04.</span> EXPEDITIONS</a>
+        <a href="#experience" class="ribbon-link inline-flex items-center gap-1 font-hud"><span class="r-num text-neon-pink">05.</span> FLIGHT LOG</a>
+        <a href="#contact" class="ribbon-link inline-flex items-center gap-1 font-hud"><span class="r-num text-neon-pink">06.</span> TRANSMIT</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- STARSHIP ARCADE MINI-GAME OVERLAY -->
+  <div class="game-overlay" id="gameOverlay" aria-hidden="true">
+    <div class="game-hud">
+      <div class="game-stat">SCORE: <span id="gameScore">0</span></div>
+      <div class="game-stat">HULL: <span id="gameHealth">100%</span></div>
+      <div class="game-stat">ASTEROIDS: <span id="gameDestroyed">0</span></div>
+      <button class="btn btn-hud-sm game-exit-btn" id="exitGameBtn">
+        <i class="fa-solid fa-xmark"></i> EXIT [ESC]
+      </button>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+    <div class="game-instructions" id="gameInstructions">
+      <p><i class="fa-solid fa-gamepad"></i> <strong>CONTROLS:</strong> Move Mouse or Touch to Fly. Click/Tap to Fire Lasers!</p>
+    </div>
+    <!-- Mobile On-Screen Laser Button -->
+    <button class="mobile-fire-btn" id="mobileFireBtn" aria-label="Fire Plasma Lasers">
+      FIRE<br>LASERS
+    </button>
+  </div>
+
+  <!-- MAIN SCROLL CONTENT -->
+  <main>
+    <!-- HERO SECTION: THE COMMAND BRIDGE -->
+    <section class="hero-section flex flex-col justify-center relative min-h-[88vh]" id="hero">
+      <div class="container hero-container grid lg:grid-cols-[1.15fr_0.85fr] items-center gap-8">
+        <div class="hero-content">
+          <div class="sci-status-pill animate-fade-in inline-flex items-center gap-2 rounded-full border border-neon-pink">
+            <span class="radar-dot"></span>
+            <span class="status-code">ORBITAL STATUS: ACTIVE FOR ROLES</span>
+          </div>
+
+          <h1 class="hero-title animate-fade-up font-hud font-black">
+            COMMANDER <br>
+            <span class="space-gradient-text">PAYAL KUMARI</span>
+          </h1>
+
+          <div class="role-wrapper animate-fade-up delay-1 font-mono">
+            <span class="role-prefix text-neon-blue">SPECIALIZATION: </span>
+            <span class="role-dynamic text-neon-pink font-bold" id="typingText"></span>
+            <span class="typing-cursor text-neon-blue">_</span>
+          </div>
+
+          <p class="hero-bio animate-fade-up delay-2 text-slate-300">
+            Full-Stack Developer building high-velocity automation workflows, asynchronous RESTful APIs, and real-time webhook listeners. Master of Python, FastAPI, JavaScript, React.js, and SQL security.
+          </p>
+
+          <!-- Cockpit CTA Buttons -->
+          <div class="hero-cta-group animate-fade-up delay-3 flex flex-wrap gap-3">
+            <a href="#projects" class="btn btn-hud-primary inline-flex items-center gap-2">
+              <i class="fa-solid fa-shuttle-space"></i>
+              <span>VIEW EXPEDITIONS</span>
+            </a>
+            <button class="btn btn-hud-arcade inline-flex items-center gap-2" id="heroPlayBtn">
+              <i class="fa-solid fa-crosshairs"></i>
+              <span>TEST-FLY STARSHIP</span>
+            </button>
+            <a href="cvpayal.jpeg" target="_blank" download="Payal_Kumari_CV.jpeg" class="btn btn-hud-outline inline-flex items-center gap-2">
+              <i class="fa-solid fa-download"></i>
+              <span>DOWNLOAD CV</span>
+            </a>
+          </div>
+
+          <!-- Direct Comms Bar -->
+          <div class="hero-comms animate-fade-up delay-4 mt-6">
+            <span class="comms-title font-hud text-xs text-neon-blue tracking-wider block mb-2">COMMUNICATION FREQUENCIES:</span>
+            <div class="comms-links flex flex-wrap gap-2.5">
+              <a href="mailto:dizzimshap546@gmail.com" class="comm-badge inline-flex items-center gap-2" title="Send Email">
+                <i class="fa-solid fa-envelope"></i> dizzimshap546@gmail.com
+              </a>
+              <a href="tel:+918879839307" class="comm-badge inline-flex items-center gap-2" title="Call Me">
+                <i class="fa-solid fa-phone"></i> +91 8879839307
+              </a>
+              <a href="https://github.com/Payal-creator" target="_blank" rel="noopener noreferrer" class="comm-badge inline-flex items-center gap-2" title="GitHub Fleet">
+                <i class="fa-brands fa-github"></i> github.com/Payal-creator
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Space Cockpit HUD Hologram Widget -->
+        <div class="hero-visual animate-scale-in">
+          <div class="hud-cockpit-frame">
+            <div class="hologram-header">
+              <div class="hud-dots">
+                <span class="dot d-red"></span>
+                <span class="dot d-yellow"></span>
+                <span class="dot d-cyan"></span>
+              </div>
+              <span class="holo-title">PAYAL_AVATAR // TERMINAL_V4</span>
+              <span class="holo-fps">60 FPS</span>
+            </div>
+
+            <!-- Visual Terminal Screen with CV Highlights -->
+            <div class="terminal-screen">
+              <div class="avatar-orbit">
+                <div class="avatar-core">
+                  <i class="fa-solid fa-astronaut"></i>
+                </div>
+                <div class="orbit-ring ring-1"></div>
+                <div class="orbit-ring ring-2"></div>
+                <div class="orbit-planet p-1" title="React.js"></div>
+                <div class="orbit-planet p-2" title="Python"></div>
+                <div class="orbit-planet p-3" title="FastAPI"></div>
+              </div>
+
+              <div class="terminal-code">
+                <div class="code-line"><span class="cmd-cyan">> INITIALIZING PILOT METRICS...</span></div>
+                <div class="code-line"><span class="cmd-label">NAME:</span> <span class="cmd-val">Payal Kumari</span></div>
+                <div class="code-line"><span class="cmd-label">MISSION:</span> <span class="cmd-val">Full-Stack / MERN Developer</span></div>
+                <div class="code-line"><span class="cmd-label">CURRENT_STATION:</span> <span class="cmd-val">AAS Tech (MessBee)</span></div>
+                <div class="code-line"><span class="cmd-label">ALMA_MATER:</span> <span class="cmd-val">Lovely Professional Univ (LPU)</span></div>
+                <div class="code-line"><span class="cmd-label">SECURITY_CORE:</span> <span class="cmd-val">RBAC / JWT / SQL Validation</span></div>
+                <div class="code-line"><span class="cmd-green">> WARP CORES ONLINE: 100% READY</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAR FLEET METRICS STRIP -->
+      <div class="fleet-metrics">
+        <div class="container fleet-grid">
+          <div class="fleet-stat">
+            <span class="stat-number">B.Tech</span>
+            <span class="stat-label">Computer Science (LPU)</span>
+          </div>
+          <div class="fleet-stat">
+            <span class="stat-number">MessBee</span>
+            <span class="stat-label">Automation &amp; SaaS Intern</span>
+          </div>
+          <div class="fleet-stat">
+            <span class="stat-number">ICCS-2023</span>
+            <span class="stat-label">Conference Paper Presentation</span>
+          </div>
+          <div class="fleet-stat">
+            <span class="stat-number">ICICI Bank</span>
+            <span class="stat-label">Technical Operations Exp</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PROFILE DOSSIER (ABOUT ME) -->
+    <section class="section dossier-section" id="about">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="sci-badge">DOSSIER #01</span>
+          <h2 class="section-title">Commander Profile &amp; <span class="space-gradient-text">Mission Statement</span></h2>
+          <p class="section-subtitle">Bridging resilient backend automation pipelines with intuitive, high-performance user interfaces.</p>
+        </div>
+
+        <div class="dossier-grid grid md:grid-cols-[1.15fr_0.85fr] gap-6 items-start">
+          <div class="dossier-card glass-cockpit">
+            <div class="card-hud-bar flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+              <span class="hud-subhead font-hud text-xs text-neon-blue flex items-center gap-2"><i class="fa-solid fa-fingerprint"></i> PILOT BIOGRAPHY</span>
+              <span class="hud-status font-mono text-xs text-neon-blue px-2.5 py-0.5 rounded-full border border-neon-blue">VERIFIED</span>
+            </div>
+
+            <div class="dossier-body">
+              <p class="dossier-para text-slate-300 mb-4 leading-relaxed">
+                I am <strong class="text-white font-semibold">Payal Kumari</strong>, a Full-Stack &amp; MERN Stack Developer based in Delhi, India. I specialize in architecting automation workflows, asynchronous RESTful APIs, and real-time webhook listeners for high-traffic SaaS environments.
+              </p>
+              <p class="dossier-para text-slate-300 mb-4 leading-relaxed">
+                Currently engineering at <strong class="text-white font-semibold">AAS Tech Solutions (MessBee)</strong>, I solve complex API bottlenecks using Python and FastAPI, craft responsive React.js dashboards, implement role-based access control (RBAC), and conduct manual/functional QA testing to eliminate release regressions.
+              </p>
+              <p class="dossier-para text-slate-300 mb-4 leading-relaxed">
+                My foundation includes a <strong class="text-white font-semibold">B.Tech in Computer Science &amp; Engineering from Lovely Professional University (LPU)</strong>, operational data validation at <strong class="text-white font-semibold">ICICI Bank</strong>, and an authored conference presentation at the <strong class="text-white font-semibold">7th International Joint Conference on Computing Sciences (ICCS-2023)</strong>.
+              </p>
+
+              <div class="dossier-actions flex flex-wrap gap-3 mt-6">
+                <a href="cvpayal.jpeg" target="_blank" download="Payal_Kumari_CV.jpeg" class="btn btn-hud-primary btn-sm inline-flex items-center gap-2">
+                  <i class="fa-solid fa-file-pdf"></i>
+                  <span>VIEW FULL CV (IMAGE)</span>
+                </a>
+                <a href="mailto:dizzimshap546@gmail.com" class="btn btn-hud-outline btn-sm inline-flex items-center gap-2">
+                  <i class="fa-solid fa-paper-plane"></i>
+                  <span>DIRECT TRANSMISSION</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tactical Capabilities Grid -->
+          <div class="tactical-grid flex flex-col gap-3.5">
+            <div class="tactical-item glass-cockpit flex items-start gap-3.5 p-4 rounded-lg">
+              <div class="tactical-icon flex items-center justify-center shrink-0 w-10 h-10 rounded-md bg-neon-pink/15 text-neon-pink border border-neon-pink/30"><i class="fa-solid fa-network-wired"></i></div>
+              <div>
+                <h4 class="tactical-title font-hud text-sm font-bold text-white mb-1">Asynchronous APIs &amp; Webhooks</h4>
+                <p class="tactical-desc text-xs text-slate-400">Developing non-blocking Python/FastAPI listeners and webhook integrations for automation workflows.</p>
+              </div>
+            </div>
+
+            <div class="tactical-item glass-cockpit flex items-start gap-3.5 p-4 rounded-lg">
+              <div class="tactical-icon flex items-center justify-center shrink-0 w-10 h-10 rounded-md bg-neon-pink/15 text-neon-pink border border-neon-pink/30"><i class="fa-brands fa-react"></i></div>
+              <div>
+                <h4 class="tactical-title font-hud text-sm font-bold text-white mb-1">High-Velocity React Dashboards</h4>
+                <p class="tactical-desc text-xs text-slate-400">Building responsive, accessible administrative interfaces with fluid navigation and fast rendering.</p>
+              </div>
+            </div>
+
+            <div class="tactical-item glass-cockpit flex items-start gap-3.5 p-4 rounded-lg">
+              <div class="tactical-icon flex items-center justify-center shrink-0 w-10 h-10 rounded-md bg-neon-pink/15 text-neon-pink border border-neon-pink/30"><i class="fa-solid fa-shield-halved"></i></div>
+              <div>
+                <h4 class="tactical-title font-hud text-sm font-bold text-white mb-1">Security &amp; Token Auth (RBAC)</h4>
+                <p class="tactical-desc text-xs text-slate-400">Enforcing token-based authentication and role-based permissions to safeguard sensitive endpoints.</p>
+              </div>
+            </div>
+
+            <div class="tactical-item glass-cockpit flex items-start gap-3.5 p-4 rounded-lg">
+              <div class="tactical-icon flex items-center justify-center shrink-0 w-10 h-10 rounded-md bg-neon-pink/15 text-neon-pink border border-neon-pink/30"><i class="fa-solid fa-bug-slash"></i></div>
+              <div>
+                <h4 class="tactical-title font-hud text-sm font-bold text-white mb-1">QA &amp; Defect Neutralization</h4>
+                <p class="tactical-desc text-xs text-slate-400">Designing exhaustive test cases, conducting regression testing, and validating SQL transactions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: TECHNICAL ARSENAL (SKILLS) -->
+    <section class="section skills-section" id="skills">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="sci-badge">ARSENAL #02</span>
+          <h2 class="section-title">Weaponry &amp; <span class="space-gradient-text">Flight Systems</span></h2>
+          <p class="section-subtitle">Verified technical capabilities from my academic training and SaaS engineering experience.</p>
+        </div>
+
+        <div class="arsenal-grid">
+          <!-- Card 1: Core Languages & Frameworks -->
+          <div class="arsenal-card glass-cockpit">
+            <div class="arsenal-header">
+              <div class="arsenal-icon-wrap icon-cyan">
+                <i class="fa-solid fa-code"></i>
+              </div>
+              <div>
+                <h3 class="arsenal-category">Core Programming &amp; Backend</h3>
+                <span class="arsenal-sub">Server Engines &amp; APIs</span>
+              </div>
+            </div>
+            <div class="arsenal-tags">
+              <span class="plasma-tag"><i class="fa-brands fa-python"></i> Python</span>
+              <span class="plasma-tag"><i class="fa-solid fa-bolt"></i> FastAPI</span>
+              <span class="plasma-tag"><i class="fa-brands fa-js"></i> JavaScript (ES6+)</span>
+              <span class="plasma-tag"><i class="fa-solid fa-network-wired"></i> RESTful APIs</span>
+              <span class="plasma-tag"><i class="fa-solid fa-tower-broadcast"></i> Webhook Listeners</span>
+              <span class="plasma-tag"><i class="fa-brands fa-node-js"></i> Node.js Basics</span>
+              <span class="plasma-tag"><i class="fa-solid fa-shield-virus"></i> Token Auth / JWT</span>
+              <span class="plasma-tag"><i class="fa-solid fa-user-lock"></i> Role-Based Access (RBAC)</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Frontend Engineering -->
+          <div class="arsenal-card glass-cockpit">
+            <div class="arsenal-header">
+              <div class="arsenal-icon-wrap icon-amber">
+                <i class="fa-brands fa-react"></i>
+              </div>
+              <div>
+                <h3 class="arsenal-category">Frontend &amp; Client UI</h3>
+                <span class="arsenal-sub">Interactive Cockpits</span>
+              </div>
+            </div>
+            <div class="arsenal-tags">
+              <span class="plasma-tag"><i class="fa-brands fa-react"></i> React.js</span>
+              <span class="plasma-tag"><i class="fa-brands fa-html5"></i> HTML5 Semantic</span>
+              <span class="plasma-tag"><i class="fa-brands fa-css3-alt"></i> Modern CSS3</span>
+              <span class="plasma-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> Responsive UI</span>
+              <span class="plasma-tag"><i class="fa-solid fa-table-columns"></i> Admin Dashboards</span>
+              <span class="plasma-tag"><i class="fa-solid fa-gauge-high"></i> Performance Tuning</span>
+              <span class="plasma-tag"><i class="fa-solid fa-universal-access"></i> Accessibility</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Databases & Data Analysis -->
+          <div class="arsenal-card glass-cockpit">
+            <div class="arsenal-header">
+              <div class="arsenal-icon-wrap icon-violet">
+                <i class="fa-solid fa-database"></i>
+              </div>
+              <div>
+                <h3 class="arsenal-category">Databases &amp; Data Analysis</h3>
+                <span class="arsenal-sub">Storage &amp; Computation</span>
+              </div>
+            </div>
+            <div class="arsenal-tags">
+              <span class="plasma-tag"><i class="fa-solid fa-database"></i> Structured SQL</span>
+              <span class="plasma-tag"><i class="fa-solid fa-filter"></i> Data Validation</span>
+              <span class="plasma-tag"><i class="fa-solid fa-scale-balanced"></i> Balance Reconciliation</span>
+              <span class="plasma-tag"><i class="fa-solid fa-chart-line"></i> Pandas &amp; NumPy</span>
+              <span class="plasma-tag"><i class="fa-solid fa-broom"></i> Data Cleaning</span>
+              <span class="plasma-tag"><i class="fa-solid fa-leaf"></i> MongoDB (MERN)</span>
+              <span class="plasma-tag"><i class="fa-solid fa-triangle-exclamation"></i> Exception Handling</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Quality Assurance & Delivery -->
+          <div class="arsenal-card glass-cockpit">
+            <div class="arsenal-header">
+              <div class="arsenal-icon-wrap icon-coral">
+                <i class="fa-solid fa-microscope"></i>
+              </div>
+              <div>
+                <h3 class="arsenal-category">QA Testing &amp; Operations</h3>
+                <span class="arsenal-sub">Verification &amp; Delivery</span>
+              </div>
+            </div>
+            <div class="arsenal-tags">
+              <span class="plasma-tag"><i class="fa-solid fa-list-check"></i> Manual QA &amp; Test Cases</span>
+              <span class="plasma-tag"><i class="fa-solid fa-vial-circle-check"></i> Functional Testing</span>
+              <span class="plasma-tag"><i class="fa-solid fa-rotate-left"></i> Regression Testing</span>
+              <span class="plasma-tag"><i class="fa-solid fa-bug"></i> Defect Tracking</span>
+              <span class="plasma-tag"><i class="fa-solid fa-book"></i> Test Documentation</span>
+              <span class="plasma-tag"><i class="fa-brands fa-git-alt"></i> Git &amp; GitHub</span>
+              <span class="plasma-tag"><i class="fa-solid fa-chalkboard-user"></i> Technical Training</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: FEATURED EXPEDITIONS (PROJECTS) -->
+    <section class="section expeditions-section" id="projects">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="sci-badge">EXPEDITIONS #03</span>
+          <h2 class="section-title">Mission Archives &amp; <span class="space-gradient-text">Software Artifacts</span></h2>
+          <p class="section-subtitle">Real-world applications engineered for speed, automation, security, and delightful user interaction.</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="project-filters flex flex-wrap justify-center gap-2 mb-8">
+          <button class="hud-filter-btn active inline-flex items-center gap-1.5" data-filter="all"><i class="fa-solid fa-globe"></i> ALL SECTORS</button>
+          <button class="hud-filter-btn inline-flex items-center gap-1.5" data-filter="automation"><i class="fa-solid fa-robot"></i> AUTOMATION &amp; APIS</button>
+          <button class="hud-filter-btn inline-flex items-center gap-1.5" data-filter="fullstack"><i class="fa-solid fa-layer-group"></i> FULL-STACK MERN</button>
+          <button class="hud-filter-btn inline-flex items-center gap-1.5" data-filter="dashboard"><i class="fa-solid fa-chart-pie"></i> DASHBOARDS</button>
+        </div>
+
+        <!-- Project Cards Grid -->
+        <div class="expeditions-grid grid md:grid-cols-2 gap-6">
+          
+          <!-- Expedition 1: MessBee Automation Engine -->
+          <article class="expedition-card glass-cockpit" data-category="automation">
+            <div class="expedition-preview preview-saas">
+              <div class="sector-badge font-mono text-[0.68rem] tracking-wider text-neon-blue">SECTOR: FASTAPI / PYTHON</div>
+              <div class="hud-radar-scan"></div>
+              <div class="hud-code-snippet">
+                <code>@app.post("/webhook/v1/sync")<br>async def handle_stream(payload: Event):<br>&nbsp;&nbsp;await verify_token(payload.auth)<br>&nbsp;&nbsp;return {"status": "DISPATCHED"}</code>
+              </div>
+            </div>
+            <div class="expedition-content p-5">
+              <div class="expedition-meta flex items-center justify-between mb-2">
+                <span class="meta-tag font-hud text-[0.68rem] text-neon-pink">AUTOMATION &amp; BACKEND</span>
+                <span class="meta-stat font-mono text-xs text-neon-blue flex items-center gap-1"><i class="fa-solid fa-bolt"></i> SUB-40MS</span>
+              </div>
+              <h3 class="expedition-title font-hud text-lg font-bold text-white mb-2">MessBee SaaS — Automation &amp; Webhook Engine</h3>
+              <p class="expedition-desc text-slate-300 text-xs mb-3 leading-relaxed">
+                Asynchronous event processing and webhook dispatching system handling automated data synchronization, payload validation, and instant notifications.
+              </p>
+              <div class="tech-plasma-row flex flex-wrap gap-2 mb-4">
+                <span>Python</span>
+                <span>FastAPI</span>
+                <span>Webhooks</span>
+                <span>SQL</span>
+                <span>RBAC</span>
+              </div>
+              <div class="expedition-actions flex flex-wrap gap-2.5">
+                <button class="btn btn-hud-sm btn-hud-primary open-project-modal inline-flex items-center gap-1.5" data-project-id="messbee">
+                  <i class="fa-solid fa-circle-info"></i> MISSION INTEL
+                </button>
+                <a href="https://github.com/Payal-creator" target="_blank" rel="noopener noreferrer" class="btn btn-hud-sm btn-hud-outline inline-flex items-center gap-1.5">
+                  <i class="fa-brands fa-github"></i> GITHUB FLEET
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Expedition 2: NovaStore Commerce Engine -->
+          <article class="expedition-card glass-cockpit" data-category="fullstack">
+            <div class="expedition-preview preview-mern">
+              <div class="sector-badge">SECTOR: MERN STACK</div>
+              <div class="hud-radar-scan"></div>
+              <div class="hud-code-snippet">
+                <code>const OrderSchema = new Schema({<br>&nbsp;&nbsp;buyer: { type: ObjectId, ref: 'User' },<br>&nbsp;&nbsp;amount: Number, status: 'FULFILLED'<br>});</code>
+              </div>
+            </div>
+            <div class="expedition-content">
+              <div class="expedition-meta">
+                <span class="meta-tag">MERN FULL-STACK</span>
+                <span class="meta-stat"><i class="fa-solid fa-star"></i> FEATURED</span>
+              </div>
+              <h3 class="expedition-title">NovaStore — MERN E-Commerce Architecture</h3>
+              <p class="expedition-desc">
+                Full-featured commerce engine built with React, Node.js, Express, and MongoDB. Incorporates JWT token authentication, order state machine, and administrative analytics.
+              </p>
+              <div class="tech-plasma-row">
+                <span>React.js</span>
+                <span>Node.js</span>
+                <span>Express</span>
+                <span>MongoDB</span>
+                <span>JWT Auth</span>
+              </div>
+              <div class="expedition-actions">
+                <button class="btn btn-hud-sm btn-hud-primary open-project-modal" data-project-id="novastore">
+                  <i class="fa-solid fa-circle-info"></i> MISSION INTEL
+                </button>
+                <a href="https://github.com/Payal-creator" target="_blank" rel="noopener noreferrer" class="btn btn-hud-sm btn-hud-outline">
+                  <i class="fa-brands fa-github"></i> GITHUB FLEET
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Expedition 3: PulseMetrics Realtime Telemetry Dashboard -->
+          <article class="expedition-card glass-cockpit" data-category="dashboard">
+            <div class="expedition-preview preview-dash">
+              <div class="sector-badge">SECTOR: REACT / DASHBOARDS</div>
+              <div class="hud-radar-scan"></div>
+              <div class="hud-code-snippet">
+                <code>// Telemetry chart stream<br>const [metrics, setMetrics] = useState([]);<br>useTelemetrySync({ intervalMs: 250 });</code>
+              </div>
+            </div>
+            <div class="expedition-content">
+              <div class="expedition-meta">
+                <span class="meta-tag">UI DASHBOARD &amp; ANALYTICS</span>
+                <span class="meta-stat"><i class="fa-solid fa-signal"></i> LIVE TELEMETRY</span>
+              </div>
+              <h3 class="expedition-title">PulseMetrics — Realtime Telemetry Command</h3>
+              <p class="expedition-desc">
+                High-performance administrative dashboard delivering live chart drilldowns, user session analytics, exportable compliance reports, and lightning-fast client navigation.
+              </p>
+              <div class="tech-plasma-row">
+                <span>React.js</span>
+                <span>JavaScript</span>
+                <span>Chart.js</span>
+                <span>CSS Variables</span>
+                <span>REST API</span>
+              </div>
+              <div class="expedition-actions">
+                <button class="btn btn-hud-sm btn-hud-primary open-project-modal" data-project-id="pulsemetrics">
+                  <i class="fa-solid fa-circle-info"></i> MISSION INTEL
+                </button>
+                <a href="https://github.com/Payal-creator" target="_blank" rel="noopener noreferrer" class="btn btn-hud-sm btn-hud-outline">
+                  <i class="fa-brands fa-github"></i> GITHUB FLEET
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Expedition 4: Automated Banking Reconciler -->
+          <article class="expedition-card glass-cockpit" data-category="automation">
+            <div class="expedition-preview preview-bank">
+              <div class="sector-badge">SECTOR: SQL / RECONCILIATION</div>
+              <div class="hud-radar-scan"></div>
+              <div class="hud-code-snippet">
+                <code>SELECT txn_id, account, balance_delta<br>FROM core_ledger<br>WHERE status = 'EXCEPTION'<br>ORDER BY timestamp DESC;</code>
+              </div>
+            </div>
+            <div class="expedition-content">
+              <div class="expedition-meta">
+                <span class="meta-tag">DATA INTEGRITY &amp; TESTING</span>
+                <span class="meta-stat"><i class="fa-solid fa-shield-cat"></i> ZERO-LOSS</span>
+              </div>
+              <h3 class="expedition-title">LedgerGuard — SQL Audit &amp; Balance Reconciler</h3>
+              <p class="expedition-desc">
+                Automated transaction verification system based on banking operations logic. Detects ledger imbalances, isolates database exceptions, and accelerates resolution workflows.
+              </p>
+              <div class="tech-plasma-row">
+                <span>Structured SQL</span>
+                <span>Python</span>
+                <span>Data Validation</span>
+                <span>Exception Tracing</span>
+                <span>QA Reports</span>
+              </div>
+              <div class="expedition-actions">
+                <button class="btn btn-hud-sm btn-hud-primary open-project-modal" data-project-id="ledgerguard">
+                  <i class="fa-solid fa-circle-info"></i> MISSION INTEL
+                </button>
+                <a href="https://github.com/Payal-creator" target="_blank" rel="noopener noreferrer" class="btn btn-hud-sm btn-hud-outline">
+                  <i class="fa-brands fa-github"></i> GITHUB FLEET
+                </a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: FLIGHT LOG (EXPERIENCE & EDUCATION TIMELINE) -->
+    <section class="section timeline-section" id="experience">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="sci-badge">FLIGHT LOG #04</span>
+          <h2 class="section-title">Mission History &amp; <span class="space-gradient-text">Academic Stardates</span></h2>
+          <p class="section-subtitle">Chronological deployment trajectory extracted directly from Payal Kumari's verified service records.</p>
+        </div>
+
+        <div class="space-timeline">
+          <!-- Station 1: AAS Tech Solutions (MessBee) -->
+          <div class="stardate-node">
+            <div class="stardate-marker">
+              <i class="fa-solid fa-satellite"></i>
+            </div>
+            <div class="stardate-card glass-cockpit">
+              <div class="stardate-header">
+                <div>
+                  <span class="stardate-badge">OCTOBER 2025 — PRESENT [ACTIVE MISSION]</span>
+                  <h3 class="stardate-role">Full-Stack Developer / Software Engineering Intern</h3>
+                  <h4 class="stardate-org">AAS Tech Solutions (MessBee) — Dhanbad, India</h4>
+                </div>
+                <div class="stardate-tag">MERN &amp; FASTAPI</div>
+              </div>
+              <p class="stardate-summary">
+                Directly developing features across Python, FastAPI, JavaScript, and React.js to power automated SaaS workflows and client-side interfaces.
+              </p>
+              <ul class="stardate-points">
+                <li><i class="fa-solid fa-angle-right"></i> Resolved critical API and webhook defects per sprint across MessBee automation workflows using Python &amp; FastAPI.</li>
+                <li><i class="fa-solid fa-angle-right"></i> Created responsive administrative dashboards and client-side interfaces in React.js to streamline navigation and runtime page performance.</li>
+                <li><i class="fa-solid fa-angle-right"></i> Implemented token-based authentication and role-based access control (RBAC) to protect customer data and sensitive application routes.</li>
+                <li><i class="fa-solid fa-angle-right"></i> Designed manual functional test cases across endpoints and user journeys to catch release regressions prior to deployment.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Station 2: ICICI Bank -->
+          <div class="stardate-node">
+            <div class="stardate-marker">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div class="stardate-card glass-cockpit">
+              <div class="stardate-header">
+                <div>
+                  <span class="stardate-badge">MARCH 2025 — SEPTEMBER 2025</span>
+                  <h3 class="stardate-role">Technical Operations Assistant</h3>
+                  <h4 class="stardate-org">ICICI Bank — Roorkee, India</h4>
+                </div>
+                <div class="stardate-tag">CORE BANKING &amp; SQL</div>
+              </div>
+              <p class="stardate-summary">
+                Managed high-volume financial data verification, executed complex SQL audits, and resolved functional system errors across core banking ledgers.
+              </p>
+              <ul class="stardate-points">
+                <li><i class="fa-solid fa-angle-right"></i> Validated daily transaction records across core banking systems to support escalations and branch operations.</li>
+                <li><i class="fa-solid fa-angle-right"></i> Executed structured SQL queries to extract branch data and prepare compliance and performance reports.</li>
+                <li><i class="fa-solid fa-angle-right"></i> Investigated functional errors, traced exceptions, and documented defects for faster issue resolution.</li>
+                <li><i class="fa-solid fa-angle-right"></i> Built standard operating procedures and trained teammates on consistent reconciliation and reporting protocols.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Station 3: KICAM Private ITI -->
+          <div class="stardate-node">
+            <div class="stardate-marker">
+              <i class="fa-solid fa-chalkboard-user"></i>
+            </div>
+            <div class="stardate-card glass-cockpit">
+              <div class="stardate-header">
+                <div>
+                  <span class="stardate-badge">SEPTEMBER 2023 — OCTOBER 2024</span>
+                  <h3 class="stardate-role">Instructor – Employability &amp; Digital Skills</h3>
+                  <h4 class="stardate-org">KICAM Private ITI (Affiliated by NCVT) — Dhanbad, Jharkhand</h4>
+                </div>
+                <div class="stardate-tag">INSTRUCTION &amp; LABS</div>
+              </div>
+              <p class="stardate-summary">
+                Led technical instruction in digital tools, software fundamentals, and professional communication for future technicians and developers.
+              </p>
+              <ul class="stardate-points">
+                <li><i class="fa-solid fa-angle-right"></i> Designed lesson plans aligned with NCVT curriculum standards for digital tools, computer concepts, and workplace communication.</li>
+                <li><i class="fa-solid fa-angle-right"></i> Conducted hands-on lab instruction translating technical topics into practical student programming exercises.</li>
+                <li><i class="fa-solid fa-angle-right"></i> Used practical lab assessments to track student progress and tailor mentorship to individual learning curves.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Station 4: Academic Degree — Lovely Professional University -->
+          <div class="stardate-node">
+            <div class="stardate-marker">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div class="stardate-card glass-cockpit">
+              <div class="stardate-header">
+                <div>
+                  <span class="stardate-badge">GRADUATED: 01/2023</span>
+                  <h3 class="stardate-role">Bachelor of Technology (B.Tech) — Computer Science &amp; Engineering</h3>
+                  <h4 class="stardate-org">Lovely Professional University (LPU) — Punjab, India</h4>
+                </div>
+                <div class="stardate-tag">ENGINEERING DEGREE</div>
+              </div>
+              <p class="stardate-summary">
+                Comprehensive four-year engineering curriculum covering Data Structures, Algorithms, Software Engineering, Database Systems, Computer Networks, and Full-Stack Development.
+              </p>
+            </div>
+          </div>
+
+          <!-- Station 5: Conferences & Certifications -->
+          <div class="stardate-node">
+            <div class="stardate-marker">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <div class="stardate-card glass-cockpit">
+              <div class="stardate-header">
+                <div>
+                  <span class="stardate-badge">ACADEMIC RESEARCH &amp; CREDENTIALS</span>
+                  <h3 class="stardate-role">Conference Presentations &amp; Professional Certifications</h3>
+                  <h4 class="stardate-org">Verified Accomplishments</h4>
+                </div>
+              </div>
+              <ul class="stardate-points">
+                <li><i class="fa-solid fa-award"></i> <strong>Conference Paper / Presentation:</strong> 7th International Joint Conference on Computing Sciences (ICCS-2023) KILBY100.</li>
+                <li><i class="fa-solid fa-certificate"></i> <strong>Complete Python Bootcamp:</strong> Python Programming Certification (Udemy).</li>
+                <li><i class="fa-solid fa-certificate"></i> <strong>JavaScript for Web Development:</strong> Board Infinity Certification.</li>
+                <li><i class="fa-solid fa-certificate"></i> <strong>Data Analysis with Python:</strong> Data cleaning &amp; processing using Pandas and NumPy.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: TRANSMIT COMMUNIQUE (CONTACT) -->
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="sci-badge">TRANSMISSION FREQUENCY #05</span>
+          <h2 class="section-title">Open Subspace Channel &amp; <span class="space-gradient-text">Initiate Contact</span></h2>
+          <p class="section-subtitle">Reach out for software engineering roles, MERN / full-stack opportunities, or technical collaboration.</p>
+        </div>
+
+        <div class="comms-grid grid md:grid-cols-[1fr_1.35fr] gap-6">
+          <!-- Left Telemetry Links -->
+          <div class="comms-sidebar flex flex-col gap-3.5">
+            <div class="comm-channel-card glass-cockpit flex items-center gap-3.5 p-4 rounded-lg">
+              <div class="channel-icon flex items-center justify-center shrink-0 w-10 h-10 rounded-md bg-neon-pink/15 text-neon-pink border border-neon-pink/30"><i class="fa-solid fa-envelope"></i></div>
+              <div>
+                <span class="channel-label font-hud text-[0.68rem] text-neon-blue block mb-0.5">PRIMARY INBOX</span>
+                <a href="mailto:dizzimshap546@gmail.com" class="channel-link font-mono text-sm text-white hover:text-neon-pink transition-colors">dizzimshap546@gmail.com</a>
+              </div>
+            </div>
+
+            <div class="comm-channel-card glass-cockpit flex items-center gap-3.5 p-4 rounded-lg">
+              <div class="channel-icon flex items-center justify-center shrink-0 w-10 h-10 rounded-md bg-neon-pink/15 text-neon-pink border border-neon-pink/30"><i class="fa-solid fa-phone"></i></div>
+              <div>
+                <span class="channel-label font-hud text-[0.68rem] text-neon-blue block mb-0.5">VOICE FREQUENCY</span>
+                <a href="tel:+918879839307" class="channel-link font-mono text-sm text-white hover:text-neon-pink transition-colors">+91 8879839307</a>
+              </div>
+            </div>
+
+            <div class="comm-channel-card glass-cockpit flex items-center gap-3.5 p-4 rounded-lg">
+              <div class="channel-icon flex items-center justify-center shrink-0 w-10 h-10 rounded-md bg-neon-pink/15 text-neon-pink border border-neon-pink/30"><i class="fa-brands fa-github"></i></div>
+              <div>
+                <span class="channel-label font-hud text-[0.68rem] text-neon-blue block mb-0.5">GIT COMMAND DOCK</span>
+                <a href="https://github.com/Payal-creator" target="_blank" rel="noopener noreferrer" class="channel-link font-mono text-sm text-white hover:text-neon-pink transition-colors">github.com/Payal-creator</a>
+              </div>
+            </div>
+
+            <div class="comm-channel-card glass-cockpit flex items-center gap-3.5 p-4 rounded-lg">
+              <div class="channel-icon flex items-center justify-center shrink-0 w-10 h-10 rounded-md bg-neon-pink/15 text-neon-pink border border-neon-pink/30"><i class="fa-solid fa-location-crosshairs"></i></div>
+              <div>
+                <span class="channel-label font-hud text-[0.68rem] text-neon-blue block mb-0.5">ORBITAL BASE</span>
+                <span class="channel-link font-mono text-sm text-slate-300">Delhi, IN 110054 (Remote &amp; On-Site)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Sci-Fi Form -->
+          <div class="comms-terminal glass-cockpit">
+            <div class="terminal-bar">
+              <div class="hud-dots">
+                <span class="dot d-red"></span>
+                <span class="dot d-yellow"></span>
+                <span class="dot d-cyan"></span>
+              </div>
+              <span class="term-title">SECURE_COMMUNICATION_PROTOCOL.EXE</span>
+            </div>
+
+            <form id="contactForm" class="sci-form" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="userName"><i class="fa-regular fa-user"></i> CALLSIGN / NAME *</label>
+                  <input type="text" id="userName" name="name" placeholder="e.g. Commander Sarah Chen" required>
+                  <span class="error-msg" id="nameError"></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="userEmail"><i class="fa-regular fa-envelope"></i> RETURN FREQUENCY / EMAIL *</label>
+                  <input type="email" id="userEmail" name="email" placeholder="e.g. sarah@stargroup.tech" required>
+                  <span class="error-msg" id="emailError"></span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="userSubject"><i class="fa-solid fa-tag"></i> MISSION DIRECTIVE / SUBJECT *</label>
+                <input type="text" id="userSubject" name="subject" placeholder="Full-Stack Engineering Role / SaaS Project Inquiry" required>
+                <span class="error-msg" id="subjectError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="userMessage"><i class="fa-regular fa-comment-dots"></i> TRANSMISSION PAYLOAD / MESSAGE *</label>
+                <textarea id="userMessage" name="message" rows="5" placeholder="Hi Payal Kumari, We reviewed your background in FastAPI, React.js, and MessBee automation. We would love to interview you..." required></textarea>
+                <span class="error-msg" id="messageError"></span>
+              </div>
+
+              <button type="submit" class="btn btn-hud-primary btn-block" id="submitBtn">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span class="btn-text">TRANSMIT TO PAYAL KUMARI</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- STARBASE FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="footer-brand flex flex-col items-center md:items-start text-center md:text-left">
+        <div class="nav-brand flex items-center gap-2.5">
+          <div class="nav-avatar-glow"><div class="nav-logo-inner"><span class="nav-logo-pk">PK</span></div></div>
+          <div class="nav-brand-text flex flex-col">
+            <span class="brand-name font-hud font-extrabold text-white tracking-wider">PAYAL<span class="brand-accent">.KUMARI</span></span>
+            <span class="brand-sub font-mono text-neon-blue tracking-widest text-[0.62rem]">FULL-STACK COMMAND</span>
+          </div>
+        </div>
+        <p class="footer-tagline text-xs text-slate-400 mt-2 max-w-sm">
+          Engineered for mission-critical reliability, speed, and immersive digital design.
+        </p>
+      </div>
+
+      <div class="footer-links flex flex-wrap justify-center gap-4 font-hud text-xs">
+        <a href="#hero" class="hover:text-neon-pink transition-colors">Command</a>
+        <a href="#about" class="hover:text-neon-pink transition-colors">Profile</a>
+        <a href="#skills" class="hover:text-neon-pink transition-colors">Arsenal</a>
+        <a href="#projects" class="hover:text-neon-pink transition-colors">Expeditions</a>
+        <a href="#experience" class="hover:text-neon-pink transition-colors">Flight Log</a>
+        <a href="#contact" class="hover:text-neon-pink transition-colors">Transmit</a>
+      </div>
+
+      <div class="footer-socials flex items-center gap-3">
+        <a href="https://github.com/Payal-creator" target="_blank" rel="noopener noreferrer" title="GitHub" class="hover:text-neon-pink transition-colors"><i class="fa-brands fa-github"></i></a>
+        <a href="mailto:dizzimshap546@gmail.com" title="Email" class="hover:text-neon-pink transition-colors"><i class="fa-solid fa-envelope"></i></a>
+        <a href="tel:+918879839307" title="Phone" class="hover:text-neon-pink transition-colors"><i class="fa-solid fa-phone"></i></a>
+        <a href="cvpayal.jpeg" target="_blank" download="Payal_Kumari_CV.jpeg" title="Download CV" class="hover:text-neon-pink transition-colors"><i class="fa-solid fa-file-arrow-down"></i></a>
+      </div>
+    </div>
+    <div class="footer-bottom mt-8 pt-4 border-t border-white/5">
+      <div class="container footer-bottom-container flex items-center justify-between text-xs text-slate-500 font-mono">
+        <p>&copy; <span id="currentYear"></span> Payal Kumari. All systems operational.</p>
+        <button class="back-to-top" id="backToTopBtn" aria-label="Warp back to top">
+          <i class="fa-solid fa-angles-up"></i>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- PROJECT INTEL MODAL DIALOG -->
+  <div class="modal-overlay" id="projectModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-card glass-cockpit" id="modalCard">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close dossier">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="modal-content" id="modalContent">
+        <!-- Dynamically injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Script -->
+  <script src="./client/js/script.js"></script>
+</body>
+</html>
