@@ -5,6 +5,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initPinSystem();
   initAudioSystem();
   initStarfield();
   initTypingEffect();
@@ -17,6 +18,161 @@ document.addEventListener('DOMContentLoaded', () => {
   initYear();
   initStarfighterGame();
 });
+
+/* ============================================================
+   PIN UNLOCK SYSTEM
+   ============================================================ */
+function initPinSystem() {
+  const CORRECT_PIN = '0000';
+  const overlay     = document.getElementById('pinOverlay');
+  const modal       = overlay ? overlay.querySelector('.pin-modal') : null;
+  const dots        = [0,1,2,3].map(i => document.getElementById('dot' + i));
+  const errorEl     = document.getElementById('pinError');
+  const cancelBtn   = document.getElementById('pinCancel');
+
+  if (!overlay) return;
+
+  let currentPin    = '';
+  let pendingAction = null; // callback to run after correct PIN
+
+  // Expose global function for locked buttons to call
+  window.requestPin = function(callback) {
+    pendingAction = callback;
+    currentPin    = '';
+    updateDots();
+    errorEl.textContent = '';
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  // Handle all .locked-btn clicks via event delegation
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.locked-btn');
+    if (!btn) return;
+    e.preventDefault();
+
+    const type = btn.dataset.unlock;
+    window.requestPin(() => {
+      if (type === 'phone') {
+        // Replace button with real phone link
+        const link = document.createElement('a');
+        link.href      = 'tel:+918879839307';
+        link.className = btn.className.replace('locked-btn','').replace('cursor-pointer','');
+        link.innerHTML = btn.innerHTML.replace(/<i class="fa-solid fa-lock[^>]*><\/i>/g,'<i class="fa-solid fa-unlock" style="margin-right:4px"></i>');
+        link.title     = 'Call Payal';
+        // Show full number
+        link.innerHTML = btn.innerHTML
+          .replace(/\+91\s*[•·\u2022]+\d+/g, '+91 8879839307')
+          .replace(/<i[^>]*fa-lock[^>]*><\/i>/g, '<i class="fa-solid fa-phone"></i>')
+          .replace(/<span[^>]*click to reveal[^>]*>.*?<\/span>/gi, '');
+        btn.replaceWith(link);
+
+      } else if (type === 'cv-download') {
+        // Trigger download
+        const a = document.createElement('a');
+        a.href     = btn.dataset.href || 'cvpayal.jpeg';
+        a.download = btn.dataset.download || 'Payal_Kumari_CV.jpeg';
+        a.target   = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // Update button to look unlocked
+        const icon  = btn.dataset.icon || 'fa-file-arrow-down';
+        const label = btn.dataset.label || 'DOWNLOAD CV';
+        btn.innerHTML = `<i class="fa-solid ${icon}"></i> ${label}`;
+        btn.classList.remove('locked-btn');
+        btn.onclick = () => { const a2 = document.createElement('a'); a2.href = btn.dataset.href || 'cvpayal.jpeg'; a2.download = btn.dataset.download || 'Payal_Kumari_CV.jpeg'; a2.target='_blank'; document.body.appendChild(a2); a2.click(); document.body.removeChild(a2); };
+      }
+    });
+  });
+
+  // Shared PIN check logic
+  function checkPin() {
+    if (currentPin.length < 4) return;
+    if (currentPin === CORRECT_PIN) {
+      dots.forEach(d => { d.classList.remove('filled','error'); d.classList.add('filled'); });
+      setTimeout(() => {
+        const action = pendingAction; // ← save BEFORE closeModal nulls it
+        closeModal();
+        if (action) action();
+      }, 300);
+    } else {
+      dots.forEach(d => { d.classList.remove('filled'); d.classList.add('error'); });
+      errorEl.textContent = '✕ INCORRECT PIN — ACCESS DENIED';
+      modal.classList.add('shake');
+      modal.addEventListener('animationend', () => modal.classList.remove('shake'), { once: true });
+      setTimeout(() => {
+        currentPin = '';
+        updateDots();
+        dots.forEach(d => d.classList.remove('error'));
+        errorEl.textContent = '';
+      }, 900);
+    }
+  }
+
+  // Keypad clicks
+  overlay.querySelectorAll('.pin-key').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val    = btn.dataset.val;
+      const action = btn.dataset.action;
+
+      if (action === 'clear') {
+        currentPin = '';
+      } else if (action === 'del') {
+        currentPin = currentPin.slice(0, -1);
+      } else if (val !== undefined && currentPin.length < 4) {
+        currentPin += val;
+      }
+
+      updateDots();
+      errorEl.textContent = '';
+      checkPin();
+    });
+  });
+
+  // Cancel
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', closeModal);
+  }
+
+  // Click backdrop to cancel
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeModal();
+  });
+
+  // Keyboard support
+  document.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('active')) return;
+    if (e.key >= '0' && e.key <= '9') {
+      if (currentPin.length < 4) {
+        currentPin += e.key;
+        updateDots();
+        checkPin();
+      }
+    } else if (e.key === 'Backspace') {
+      currentPin = currentPin.slice(0, -1);
+      updateDots();
+    } else if (e.key === 'Escape') {
+      closeModal();
+    }
+  });
+
+  function updateDots() {
+    dots.forEach((d, i) => {
+      d.classList.remove('filled', 'error');
+      if (i < currentPin.length) d.classList.add('filled');
+    });
+  }
+
+  function closeModal() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    currentPin    = '';
+    pendingAction = null;
+    updateDots();
+    errorEl.textContent = '';
+  }
+}
 
 /* --------------------------------------------------------------------------
    1. WEB AUDIO API SCI-FI SOUND SYNTHESIZER
@@ -822,15 +978,35 @@ function initStarfighterGame() {
 
   function spawnAsteroid() {
     if (Math.random() < 0.04) {
+      const radius = Math.random() * 18 + 12;
+      const numVerts = Math.floor(Math.random() * 5) + 7; // 7-11 vertices
+      const verts = [];
+      for (let i = 0; i < numVerts; i++) {
+        const angle = (i / numVerts) * Math.PI * 2;
+        // Jagged radius — between 55% and 100% of radius
+        const r = radius * (0.55 + Math.random() * 0.45);
+        verts.push({ x: Math.cos(angle) * r, y: Math.sin(angle) * r });
+      }
+      // Random crater positions
+      const craters = [];
+      const numCraters = Math.floor(Math.random() * 3) + 1;
+      for (let c = 0; c < numCraters; c++) {
+        const cr = radius * (0.12 + Math.random() * 0.2);
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * (radius * 0.45);
+        craters.push({ x: Math.cos(angle) * dist, y: Math.sin(angle) * dist, r: cr });
+      }
       asteroids.push({
         x: Math.random() * (canvas.width - 60) + 30,
         y: -40,
-        radius: Math.random() * 16 + 12,
-        speed: Math.random() * 2.5 + 2,
+        radius,
+        verts,
+        craters,
+        speed: Math.random() * 2.5 + 1.5,
         vx: (Math.random() - 0.5) * 1.5,
-        rotation: 0,
-        rotSpeed: (Math.random() - 0.5) * 0.05,
-        borderColor: Math.random() > 0.5 ? '#9d4edd' : '#ff2a85'
+        rotation: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.025,
+        color: Math.random() > 0.5 ? '#9d4edd' : '#ff2a85'
       });
     }
   }
@@ -892,13 +1068,53 @@ function initStarfighterGame() {
       ctx.save();
       ctx.translate(a.x, a.y);
       ctx.rotate(a.rotation);
-      ctx.fillStyle = '#0c0718';
-      ctx.strokeStyle = a.borderColor;
-      ctx.lineWidth = 2.2;
+
+      // Rocky fill gradient
+      const grad = ctx.createRadialGradient(-a.radius * 0.3, -a.radius * 0.3, 0, 0, 0, a.radius);
+      grad.addColorStop(0, '#2a1a3a');
+      grad.addColorStop(0.5, '#150d20');
+      grad.addColorStop(1, '#08040e');
+
+      // Draw jagged polygon body
       ctx.beginPath();
-      ctx.arc(0, 0, a.radius, 0, Math.PI * 2);
+      ctx.moveTo(a.verts[0].x, a.verts[0].y);
+      for (let v = 1; v < a.verts.length; v++) {
+        ctx.lineTo(a.verts[v].x, a.verts[v].y);
+      }
+      ctx.closePath();
+      ctx.fillStyle = grad;
       ctx.fill();
+
+      // Glowing neon border
+      ctx.strokeStyle = a.color;
+      ctx.lineWidth = 1.8;
+      ctx.shadowColor = a.color;
+      ctx.shadowBlur = 10;
       ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Inner highlight line (rock surface)
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(a.verts[0].x * 0.6, a.verts[0].y * 0.6);
+      for (let v = 1; v < a.verts.length; v++) {
+        ctx.lineTo(a.verts[v].x * 0.6, a.verts[v].y * 0.6);
+      }
+      ctx.closePath();
+      ctx.stroke();
+
+      // Draw craters
+      for (const c of a.craters) {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(157,78,221,0.35)';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(0,0,0,0.35)';
+        ctx.fill();
+      }
+
       ctx.restore();
 
       // Check laser collision

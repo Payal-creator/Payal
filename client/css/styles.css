@@ -2424,3 +2424,556 @@ a.channel-link:hover {
     width: 100%;
   }
 }
+
+/* ============================================================
+   PIN UNLOCK MODAL — SPACE HUD THEME
+   ============================================================ */
+.pin-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(2, 1, 8, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  align-items: center;
+  justify-content: center;
+}
+
+.pin-overlay.active { display: flex; }
+
+.pin-modal {
+  position: relative;
+  background: linear-gradient(160deg, #0a0518 0%, #04020d 60%, #0d0420 100%);
+  border: 1px solid rgba(157, 78, 221, 0.5);
+  border-radius: 16px;
+  padding: 0;
+  width: 100%;
+  max-width: 520px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 42, 133, 0.1),
+    0 0 40px rgba(157, 78, 221, 0.3),
+    0 0 80px rgba(255, 42, 133, 0.1),
+    inset 0 0 60px rgba(157, 78, 221, 0.04);
+  animation: pinSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Scanlines */
+.pin-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* HUD Corner Brackets */
+.pin-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  z-index: 10;
+}
+.pin-corner-tl { top: 8px; left: 8px;
+  border-top: 2px solid var(--neon-pink); border-left: 2px solid var(--neon-pink); }
+.pin-corner-tr { top: 8px; right: 8px;
+  border-top: 2px solid var(--neon-pink); border-right: 2px solid var(--neon-pink); }
+.pin-corner-bl { bottom: 8px; left: 8px;
+  border-bottom: 2px solid var(--neon-blue); border-left: 2px solid var(--neon-blue); }
+.pin-corner-br { bottom: 8px; right: 8px;
+  border-bottom: 2px solid var(--neon-blue); border-right: 2px solid var(--neon-blue); }
+
+/* Classified top bar */
+.pin-classified-bar {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 16px;
+  background: linear-gradient(90deg, transparent, rgba(255,42,133,0.15), transparent);
+  border-bottom: 1px solid rgba(255, 42, 133, 0.25);
+  font-family: var(--font-hud);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  color: var(--neon-pink);
+  white-space: nowrap;
+}
+
+.pin-classified-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--neon-pink);
+  box-shadow: 0 0 6px var(--neon-pink);
+  animation: radarBlink 1.2s infinite;
+}
+
+/* Modal header */
+.pin-modal-header {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px 10px;
+  text-align: left;
+}
+
+/* Logo with spinning scan ring */
+.pin-logo-wrap {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pin-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #ff2a85, #9d4edd, #00d2ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.6);
+  position: relative;
+  z-index: 2;
+}
+
+.pin-logo .nav-logo-inner {
+  width: 36px; height: 36px;
+  border-radius: 7px;
+}
+
+.pin-logo .nav-logo-pk { font-size: 0.78rem; }
+
+.pin-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Spinning scan ring around logo */
+.pin-scan-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  border-top-color: var(--neon-pink);
+  border-right-color: rgba(157, 78, 221, 0.4);
+  animation: pinSpin 2s linear infinite;
+  z-index: 1;
+}
+
+@keyframes pinSpin {
+  to { transform: rotate(360deg); }
+}
+
+.pin-title {
+  font-family: var(--font-hud);
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  margin: 0;
+  background: linear-gradient(135deg, #fff 0%, #e8d5ff 50%, #c4f0ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pin-subtitle {
+  font-family: var(--font-hud);
+  font-size: 0.52rem;
+  color: #7a6f9a;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+/* Dots section */
+.pin-dots-wrap {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 20px 4px;
+}
+
+.pin-dots-label {
+  font-family: var(--font-hud);
+  font-size: 0.55rem;
+  color: var(--neon-blue);
+  letter-spacing: 0.2em;
+}
+
+.pin-dots {
+  display: flex;
+  gap: 18px;
+  padding: 10px 24px;
+  background: rgba(157, 78, 221, 0.06);
+  border: 1px solid rgba(157, 78, 221, 0.2);
+  border-radius: 8px;
+}
+
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(157, 78, 221, 0.4);
+  background: transparent;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.pin-dot.filled {
+  background: var(--neon-pink);
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 12px rgba(255, 42, 133, 0.8), 0 0 24px rgba(255, 42, 133, 0.3);
+}
+
+.pin-dot.error {
+  background: #ff3333;
+  border-color: #ff3333;
+  box-shadow: 0 0 12px rgba(255, 51, 51, 0.8);
+}
+
+/* Error message */
+.pin-error {
+  position: relative;
+  z-index: 5;
+  font-family: var(--font-hud);
+  font-size: 0.62rem;
+  color: #ff3333;
+  letter-spacing: 0.1em;
+  min-height: 18px;
+  text-align: center;
+  padding: 0 24px;
+}
+
+/* Keypad */
+.pin-keypad {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 4px 20px 10px;
+}
+
+.pin-key {
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(157, 78, 221, 0.25);
+  background: rgba(10, 5, 24, 0.8);
+  color: #e0d8ff;
+  font-family: var(--font-hud);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  letter-spacing: 0.05em;
+  position: relative;
+  overflow: hidden;
+}
+
+.pin-key::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(157,78,221,0.12), transparent);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.pin-key:hover {
+  border-color: rgba(157, 78, 221, 0.7);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(157, 78, 221, 0.35), inset 0 0 10px rgba(157, 78, 221, 0.1);
+  transform: translateY(-1px);
+}
+
+.pin-key:hover::before { opacity: 1; }
+
+.pin-key:active {
+  transform: scale(0.94);
+  background: rgba(255, 42, 133, 0.2);
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.4);
+}
+
+.pin-key-clear {
+  font-size: 0.62rem;
+  color: #7a6f9a;
+  letter-spacing: 0.08em;
+}
+
+.pin-key-del { font-size: 1rem; color: #c4b8e0; }
+
+/* Bottom status bar */
+.pin-status-bar {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px;
+  background: rgba(157, 78, 221, 0.06);
+  border-top: 1px solid rgba(157, 78, 221, 0.15);
+  font-family: var(--font-hud);
+  font-size: 0.58rem;
+  color: #5a4f7a;
+  letter-spacing: 0.1em;
+}
+
+.pin-status-pulse {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #00ff88;
+  box-shadow: 0 0 6px #00ff88;
+  animation: radarBlink 1.5s infinite;
+}
+
+/* Cancel */
+.pin-cancel {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(255, 42, 133, 0.1);
+  color: #5a4f7a;
+  font-family: var(--font-hud);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pin-cancel:hover {
+  color: var(--neon-pink);
+  background: rgba(255, 42, 133, 0.06);
+}
+
+/* Animations */
+@keyframes pinSlideIn {
+  from { opacity: 0; transform: scale(0.88) translateY(24px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes pinShake {
+  0%, 100% { transform: translateX(0); }
+  15%      { transform: translateX(-10px); }
+  30%      { transform: translateX(10px); }
+  45%      { transform: translateX(-7px); }
+  60%      { transform: translateX(7px); }
+  75%      { transform: translateX(-4px); }
+  90%      { transform: translateX(4px); }
+}
+
+.pin-modal.shake { animation: pinShake 0.5s ease; }
+
+
+.pin-overlay.active {
+  display: flex;
+}
+
+.pin-modal {
+  background: linear-gradient(145deg, #0d0820, #06030e);
+  border: 1px solid rgba(157, 78, 221, 0.4);
+  border-radius: 20px;
+  padding: 36px 32px 28px;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 0 60px rgba(157, 78, 221, 0.25), 0 0 120px rgba(255, 42, 133, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: pinSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pinSlideIn {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes pinShake {
+  0%, 100% { transform: translateX(0); }
+  15%      { transform: translateX(-8px); }
+  30%      { transform: translateX(8px); }
+  45%      { transform: translateX(-6px); }
+  60%      { transform: translateX(6px); }
+  75%      { transform: translateX(-3px); }
+  90%      { transform: translateX(3px); }
+}
+
+.pin-modal.shake {
+  animation: pinShake 0.5s ease;
+}
+
+.pin-modal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.pin-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ff2a85, #9d4edd, #00d2ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.5);
+  padding: 3px;
+}
+
+.pin-logo .nav-logo-inner {
+  width: 42px;
+  height: 42px;
+  border-radius: 9px;
+  font-size: inherit;
+}
+
+.pin-logo .nav-logo-pk {
+  font-size: 0.9rem;
+}
+
+.pin-title {
+  font-family: var(--font-hud);
+  font-size: 1rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.15em;
+  margin: 0;
+}
+
+.pin-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: #9d8fbf;
+  margin: 0;
+  letter-spacing: 0.03em;
+}
+
+/* Dot indicators */
+.pin-dots {
+  display: flex;
+  gap: 14px;
+}
+
+.pin-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(157, 78, 221, 0.5);
+  background: transparent;
+  transition: all 0.15s ease;
+}
+
+.pin-dot.filled {
+  background: var(--neon-pink);
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 10px rgba(255, 42, 133, 0.7);
+}
+
+.pin-dot.error {
+  background: #ff4444;
+  border-color: #ff4444;
+  box-shadow: 0 0 10px rgba(255, 68, 68, 0.7);
+}
+
+/* Error message */
+.pin-error {
+  font-family: var(--font-hud);
+  font-size: 0.68rem;
+  color: #ff4444;
+  letter-spacing: 0.08em;
+  min-height: 16px;
+  text-align: center;
+  margin: -8px 0;
+}
+
+/* Keypad */
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.pin-key {
+  height: 52px;
+  border-radius: 10px;
+  border: 1px solid rgba(157, 78, 221, 0.3);
+  background: rgba(157, 78, 221, 0.08);
+  color: #fff;
+  font-family: var(--font-hud);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  letter-spacing: 0.05em;
+}
+
+.pin-key:hover {
+  background: rgba(157, 78, 221, 0.22);
+  border-color: rgba(157, 78, 221, 0.6);
+  box-shadow: 0 0 12px rgba(157, 78, 221, 0.3);
+  transform: scale(1.04);
+}
+
+.pin-key:active {
+  transform: scale(0.95);
+  background: rgba(255, 42, 133, 0.25);
+}
+
+.pin-key-clear {
+  font-size: 0.65rem;
+  color: #9d8fbf;
+}
+
+.pin-key-del {
+  font-size: 1rem;
+  color: #c2bdd3;
+}
+
+.pin-cancel {
+  background: none;
+  border: none;
+  color: #9d8fbf;
+  font-family: var(--font-hud);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  padding: 4px 12px;
+  transition: color 0.2s ease;
+}
+
+.pin-cancel:hover {
+  color: var(--neon-pink);
+}
+

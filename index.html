@@ -136,9 +136,9 @@
           <li><a href="#contact" class="nav-link font-hud"><span class="nav-num text-neon-pink">06.</span> TRANSMIT</a></li>
         </ul>
         <div class="drawer-extra-actions">
-          <a href="cvpayal.jpeg" target="_blank" download="Payal_Kumari_CV.jpeg" class="btn btn-hud-outline btn-block">
-            <i class="fa-solid fa-file-arrow-down"></i> DOWNLOAD CV
-          </a>
+          <button class="btn btn-hud-outline btn-block cursor-pointer locked-btn" data-unlock="cv-download" data-href="cvpayal.jpeg" data-download="Payal_Kumari_CV.jpeg" data-label="DOWNLOAD CV" data-icon="fa-file-arrow-down">
+            <i class="fa-solid fa-lock"></i> CV LOCKED &nbsp;<span style="font-size:0.65rem;opacity:0.7">(click to unlock)</span>
+          </button>
           <a href="#contact" class="btn btn-hud-primary btn-block drawer-transmit-btn">
             <i class="fa-solid fa-bolt"></i> OPEN TRANSMISSION
           </a>
@@ -147,10 +147,10 @@
 
       <!-- Nav Actions (Desktop + Mobile Toggle) -->
       <div class="nav-actions flex items-center gap-2">
-        <a href="cvpayal.jpeg" target="_blank" class="btn btn-hud-sm desktop-only-btn flex items-center gap-1.5" id="viewCvBtn" download="Payal_Kumari_CV.jpeg">
-          <i class="fa-solid fa-file-arrow-down"></i>
+        <button class="btn btn-hud-sm desktop-only-btn flex items-center gap-1.5 locked-btn" id="viewCvBtn" data-unlock="cv-download" data-href="cvpayal.jpeg" data-download="Payal_Kumari_CV.jpeg" data-label="GET CV" data-icon="fa-file-arrow-down">
+          <i class="fa-solid fa-lock"></i>
           <span>GET CV</span>
-        </a>
+        </button>
         <a href="#contact" class="btn btn-hud-primary btn-sm desktop-only-btn flex items-center gap-1.5">
           <i class="fa-solid fa-bolt"></i>
           <span>TRANSMIT</span>
@@ -233,10 +233,10 @@
               <i class="fa-solid fa-crosshairs"></i>
               <span>TEST-FLY STARSHIP</span>
             </button>
-            <a href="cvpayal.jpeg" target="_blank" download="Payal_Kumari_CV.jpeg" class="btn btn-hud-outline inline-flex items-center gap-2">
-              <i class="fa-solid fa-download"></i>
-              <span>DOWNLOAD CV</span>
-            </a>
+            <button class="btn btn-hud-outline inline-flex items-center gap-2 cursor-pointer locked-btn" data-unlock="cv-download" data-href="cvpayal.jpeg" data-download="Payal_Kumari_CV.jpeg" data-label="DOWNLOAD CV" data-icon="fa-download">
+              <i class="fa-solid fa-lock"></i>
+              <span>CV LOCKED <span style="font-size:0.65rem;opacity:0.7">(click to unlock)</span></span>
+            </button>
           </div>
 
           <!-- Direct Comms Bar -->
@@ -246,9 +246,9 @@
               <a href="mailto:dizzimshap546@gmail.com" class="comm-badge inline-flex items-center gap-2" title="Send Email">
                 <i class="fa-solid fa-envelope"></i> dizzimshap546@gmail.com
               </a>
-              <a href="tel:+918879839307" class="comm-badge inline-flex items-center gap-2" title="Call Me">
-                <i class="fa-solid fa-phone"></i> +91 8879839307
-              </a>
+              <button class="comm-badge inline-flex items-center gap-2 cursor-pointer locked-btn" data-unlock="phone" title="Click to reveal">
+                <i class="fa-solid fa-phone"></i> <span style="letter-spacing:0.1em">+91 ••••••••07</span> <i class="fa-solid fa-lock" style="font-size:0.65rem;opacity:0.7"></i>
+              </button>
               <a href="https://github.com/Payal-creator" target="_blank" rel="noopener noreferrer" class="comm-badge inline-flex items-center gap-2" title="GitHub Fleet">
                 <i class="fa-brands fa-github"></i> github.com/Payal-creator
               </a>
@@ -347,9 +347,9 @@
               </p>
 
               <div class="dossier-actions flex flex-wrap gap-3 mt-6">
-                <a href="cvpayal.jpeg" target="_blank" download="Payal_Kumari_CV.jpeg" class="btn btn-hud-primary btn-sm inline-flex items-center gap-2">
-                  <i class="fa-solid fa-file-pdf"></i>
-                  <span>VIEW FULL CV (IMAGE)</span>
+                <button onclick="this.outerHTML='<a href=\'cvpayal.jpeg\' target=\'_blank\' download=\'Payal_Kumari_CV.jpeg\' class=\'btn btn-hud-primary btn-sm inline-flex items-center gap-2\'><i class=\'fa-solid fa-file-pdf\'></i><span>VIEW FULL CV (IMAGE)</span></a>'" class="btn btn-hud-primary btn-sm inline-flex items-center gap-2 cursor-pointer">
+                  <i class="fa-solid fa-lock"></i>
+                  <span>VIEW FULL CV 🔒</span>
                 </a>
                 <a href="mailto:dizzimshap546@gmail.com" class="btn btn-hud-outline btn-sm inline-flex items-center gap-2">
                   <i class="fa-solid fa-paper-plane"></i>
@@ -823,7 +823,9 @@
               <div class="channel-icon flex items-center justify-center shrink-0 w-10 h-10 rounded-md bg-neon-pink/15 text-neon-pink border border-neon-pink/30"><i class="fa-solid fa-phone"></i></div>
               <div>
                 <span class="channel-label font-hud text-[0.68rem] text-neon-blue block mb-0.5">VOICE FREQUENCY</span>
-                <a href="tel:+918879839307" class="channel-link font-mono text-sm text-white hover:text-neon-pink transition-colors">+91 8879839307</a>
+                <button id="revealPhone" class="channel-link font-mono text-sm text-neon-blue hover:text-neon-pink transition-colors cursor-pointer flex items-center gap-1.5 locked-btn" data-unlock="phone">
+                  <i class="fa-solid fa-lock"></i> +91 ••••••••07 <span style="font-size:0.65rem;opacity:0.7">(click to reveal)</span>
+                </button>
               </div>
             </div>
 
@@ -921,8 +923,8 @@
       <div class="footer-socials flex items-center gap-3">
         <a href="https://github.com/Payal-creator" target="_blank" rel="noopener noreferrer" title="GitHub" class="hover:text-neon-pink transition-colors"><i class="fa-brands fa-github"></i></a>
         <a href="mailto:dizzimshap546@gmail.com" title="Email" class="hover:text-neon-pink transition-colors"><i class="fa-solid fa-envelope"></i></a>
-        <a href="tel:+918879839307" title="Phone" class="hover:text-neon-pink transition-colors"><i class="fa-solid fa-phone"></i></a>
-        <a href="cvpayal.jpeg" target="_blank" download="Payal_Kumari_CV.jpeg" title="Download CV" class="hover:text-neon-pink transition-colors"><i class="fa-solid fa-file-arrow-down"></i></a>
+        <button class="hover:text-neon-pink transition-colors cursor-pointer locked-btn" data-unlock="phone" title="Reveal Phone"><i class="fa-solid fa-phone"></i></button>
+        <button class="hover:text-neon-pink transition-colors cursor-pointer locked-btn" data-unlock="cv-download" data-href="cvpayal.jpeg" data-download="Payal_Kumari_CV.jpeg" title="Unlock CV"><i class="fa-solid fa-lock"></i></button>
       </div>
     </div>
     <div class="footer-bottom mt-8 pt-4 border-t border-white/5">
@@ -949,6 +951,77 @@
 
   <!-- TOAST NOTIFICATION CONTAINER -->
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- PIN UNLOCK MODAL -->
+  <div class="pin-overlay" id="pinOverlay" role="dialog" aria-modal="true" aria-label="Enter PIN to unlock">
+    <div class="pin-modal">
+      <!-- HUD corner brackets -->
+      <span class="pin-corner pin-corner-tl"></span>
+      <span class="pin-corner pin-corner-tr"></span>
+      <span class="pin-corner pin-corner-bl"></span>
+      <span class="pin-corner pin-corner-br"></span>
+
+      <!-- Scanline overlay -->
+      <div class="pin-scanlines"></div>
+
+      <!-- Top classified bar -->
+      <div class="pin-classified-bar">
+        <span class="pin-classified-dot"></span>
+        <span>CLASSIFIED // FLEET COMMAND ACCESS</span>
+        <span class="pin-classified-dot"></span>
+      </div>
+
+      <div class="pin-modal-header">
+        <div class="pin-logo-wrap">
+          <div class="pin-logo">
+            <div class="nav-logo-inner"><span class="nav-logo-pk">PK</span></div>
+          </div>
+          <div class="pin-scan-ring"></div>
+        </div>
+        <div class="pin-header-text">
+          <h2 class="pin-title">⬡ SECURE ACCESS ⬡</h2>
+          <p class="pin-subtitle">AUTHORIZATION REQUIRED — ENTER CLEARANCE CODE</p>
+        </div>
+      </div>
+
+      <!-- Dot indicators with labels -->
+      <div class="pin-dots-wrap">
+        <span class="pin-dots-label">INPUT SEQUENCE</span>
+        <div class="pin-dots" id="pinDots">
+          <span class="pin-dot" id="dot0"></span>
+          <span class="pin-dot" id="dot1"></span>
+          <span class="pin-dot" id="dot2"></span>
+          <span class="pin-dot" id="dot3"></span>
+        </div>
+      </div>
+
+      <p class="pin-error" id="pinError"></p>
+
+      <div class="pin-keypad">
+        <button class="pin-key" data-val="1">1</button>
+        <button class="pin-key" data-val="2">2</button>
+        <button class="pin-key" data-val="3">3</button>
+        <button class="pin-key" data-val="4">4</button>
+        <button class="pin-key" data-val="5">5</button>
+        <button class="pin-key" data-val="6">6</button>
+        <button class="pin-key" data-val="7">7</button>
+        <button class="pin-key" data-val="8">8</button>
+        <button class="pin-key" data-val="9">9</button>
+        <button class="pin-key pin-key-clear" data-action="clear">CLR</button>
+        <button class="pin-key" data-val="0">0</button>
+        <button class="pin-key pin-key-del" data-action="del"><i class="fa-solid fa-delete-left"></i></button>
+      </div>
+
+      <!-- Status bar -->
+      <div class="pin-status-bar">
+        <span><i class="fa-solid fa-shield-halved"></i> ENCRYPTED</span>
+        <span class="pin-status-pulse"></span>
+        <span>SYS.SEC v4.1</span>
+      </div>
+
+      <button class="pin-cancel" id="pinCancel"><i class="fa-solid fa-xmark"></i> ABORT SEQUENCE</button>
+    </div>
+  </div>
 
   <!-- Script -->
   <script src="./client/js/script.js"></script>
