@@ -1,6 +1,123 @@
-# Payal — Personal Portfolio Website 🚀
+# 🚀 Payal Kumari — Portfolio
 
-A creative, bold, and modern personal portfolio website built with HTML5, CSS3, and JavaScript ES6+. Designed specifically for **Payal** (Software Engineer & Web Developer) with rich warm sunset gradients, sleek dark glassmorphism, dynamic typing effects, interactive project showcase with modal previews, skill categorization, journey timeline, and client-side validated contact form.
+<div align="center">
+
+![Portfolio](https://img.shields.io/badge/Portfolio-Live-ff2a85?style=for-the-badge&logo=vercel&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+
+**A cinematic, space-themed personal portfolio — Full-Stack & MERN Developer.**
+
+[💌 Contact](mailto:dizzimshap546@gmail.com) · [💻 GitHub](https://github.com/Payal-creator)
+
+</div>
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🎨 **Cinematic Space HUD UI** | Dark deep-space theme with neon pink, purple & blue glows |
+| 🌌 **Interactive Starfield** | 3D parallax star canvas background |
+| ⌨️ **Typing Effect** | Dynamic role cycling in the hero section |
+| 🛸 **Starfighter Mini-Game** | Playable space shooter with jagged asteroid enemies & lasers |
+| 🔒 **PIN-Protected Content** | Phone & CV locked behind a `0000` secure PIN modal |
+| 📱 **Fully Responsive** | Mobile, tablet & desktop optimized with touch controls |
+| 🧭 **HUD Navigation** | Space-command navbar with mobile swipe drawer |
+| 💼 **Projects Showcase** | Filterable cards with modal case studies |
+| 🛠️ **Skills Matrix** | Frontend, Backend, Database & DevOps categories |
+| 📬 **Contact Form** | Validated transmission form with toast notifications |
+
+---
+
+## 🗂️ Project Structure
+
+```
+portfolio/
+│
+├── 📄 index.html           ← Main entry point
+├── 📦 package.json         ← name: "portfolio"
+├── 🔒 .gitignore
+│
+├── 📁 client/
+│   ├── css/styles.css      ← All styles (Tailwind + custom HUD CSS)
+│   └── js/script.js        ← All interactivity, game engine, PIN system
+│
+└── 📁 public/              ← Static assets (CV, images)
+    ├── cvpayal.jpeg
+    └── payal_resume_sep.docx
+```
+
+---
+
+## 🛠️ Tech Stack
+
+- **HTML5** · **Tailwind CSS** · **Vanilla CSS** (animations, glassmorphism)
+- **JavaScript ES6+** — game engine, PIN system, typing effects
+- **Vite** — dev server & bundler
+- **Web Audio API** — sci-fi sound effects synthesized in-browser
+- **Canvas API** — starfield & Starfighter game
+
+---
+
+## 🔐 PIN Protection
+
+Sensitive content (phone & CV) is protected by a **4-digit PIN modal**:
+
+- All CV and phone buttons show 🔒 locked by default
+- Click any → **SECURE ACCESS** HUD dialog opens
+- Enter **`0000`** → content unlocks instantly
+- Wrong PIN → red dots + shake + "ACCESS DENIED"
+- Keyboard supported (digits, Backspace, Escape)
+
+---
+
+## 💻 Run Locally
+
+```bash
+git clone https://github.com/Payal-creator/portfolio.git
+cd portfolio
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173** 🌐
+
+---
+
+## 🚀 Deploy to Vercel
+
+```bash
+git add .
+git commit -m "deploy"
+git push origin main
+```
+
+1. Go to **[vercel.com](https://vercel.com)** → **Add New Project**
+2. Import your GitHub repo
+3. Build Command: `npm run build` · Output: `dist`
+4. Click **Deploy** ✅
+
+---
+
+## 📬 Contact
+
+**Payal Kumari** — Full-Stack & MERN Developer
+
+- 📧 [dizzimshap546@gmail.com](mailto:dizzimshap546@gmail.com)
+- 💻 [github.com/Payal-creator](https://github.com/Payal-creator)
+- 📱 Phone: *(PIN protected — visit the live site)*
+
+---
+
+<div align="center">
+  <sub>Built with 💜 by Payal Kumari · © 2024 All rights reserved</sub>
+</div>
+
 
 ---
 
